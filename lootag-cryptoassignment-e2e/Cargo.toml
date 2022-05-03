@@ -3,6 +3,17 @@ name = "lootag-cryptoassignment-e2e"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+
+[dev-dependencies]
+cucumber="0.13.0"
+async-trait="0.1.52"
+futures="0.3"
+lootag-cryptoassignment-services={ path = "../lootag-cryptoassignment-services" }
+lootag-cryptoassignment-domain={ path = "../lootag-cryptoassignment-domain" }
+tokio= { version="1.18.1", features=["full"] }
+
+[[test]]
+name="kraken_service"
+harness=false
+

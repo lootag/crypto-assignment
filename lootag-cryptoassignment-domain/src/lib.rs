@@ -1,1 +1,9 @@
-pub mod user;
+pub mod credentials;
+pub mod currency_amount;
+pub mod fee_set;
+pub mod leverage;
+pub mod margin;
+pub mod open_order;
+pub mod open_order_description;
+pub mod server_time;
+pub mod xbt_usd;

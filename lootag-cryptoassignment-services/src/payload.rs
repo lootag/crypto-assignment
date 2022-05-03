@@ -6,18 +6,22 @@ pub enum RequestPayload {
 
 pub struct OpenOrdersRequestPayload {}
 
-pub fn encode(payload: &RequestPayload, nonce: &Nonce) -> String {
-    encode_impl(payload, nonce)
+pub fn encode(payload: &RequestPayload, nonce: &Nonce, otp: &String) -> String {
+    encode_impl(payload, nonce, otp)
 }
 
-fn encode_impl(payload: &RequestPayload, nonce: &Nonce) -> String {
+fn encode_impl(payload: &RequestPayload, nonce: &Nonce, otp: &String) -> String {
     match payload {
-        RequestPayload::OpenOrders(orders) => encode_open_orders_payload(orders, nonce),
+        RequestPayload::OpenOrders(orders) => encode_open_orders_payload(orders, nonce, otp),
     }
 }
 
-fn encode_open_orders_payload(payload: &OpenOrdersRequestPayload, nonce: &Nonce) -> String {
-    format!("nonce={}&trades=true", nonce.value.to_string())
+fn encode_open_orders_payload(
+    _payload: &OpenOrdersRequestPayload,
+    nonce: &Nonce,
+    otp: &String,
+) -> String {
+    format!("nonce={}&trades=true&otp={}", nonce.value.to_string(), otp)
 }
 
 #[cfg(test)]
@@ -32,11 +36,15 @@ mod tests {
         let open_orders = OpenOrdersRequestPayload {};
         let payload = RequestPayload::OpenOrders(open_orders);
         let nonce = Nonce { value: 1234567 };
+        let otp = String::from("123456");
 
         //Act
-        let encoded_payload = encode_impl(&payload, &nonce);
+        let encoded_payload = encode_impl(&payload, &nonce, &otp);
 
         //Assert
-        assert_eq!(encoded_payload, String::from("nonce=1234567&trades=true"));
+        assert_eq!(
+            encoded_payload,
+            String::from("nonce=1234567&trades=true&otp=123456")
+        );
     }
 }
